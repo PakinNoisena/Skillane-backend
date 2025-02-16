@@ -5,8 +5,11 @@ import {
   CreateDateColumn,
   OneToMany,
   UpdateDateColumn,
+  BeforeUpdate,
+  BeforeInsert,
 } from 'typeorm';
 import { AccountRecoveryEntity } from './account-recovery.entity';
+import * as bcrypt from 'bcryptjs';
 
 @Entity('users')
 export class UserEntity {
@@ -49,4 +52,13 @@ export class UserEntity {
     },
   )
   accountRecoveries!: AccountRecoveryEntity[];
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword() {
+    if (this.password && !this.password.startsWith('$2a$')) {
+      const salt = await bcrypt.genSalt(10);
+      this.password = await bcrypt.hash(this.password, salt);
+    }
+  }
 }
