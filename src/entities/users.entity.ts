@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   OneToMany,
+  UpdateDateColumn,
 } from 'typeorm';
 import { AccountRecoveryEntity } from './account-recovery.entity';
 
@@ -15,23 +16,29 @@ export class UserEntity {
   @Column({ unique: true })
   email!: string;
 
-  @Column()
+  @Column({ nullable: true })
+  password!: string;
+
+  @Column({ nullable: true })
   identificationNo!: string;
 
-  @Column()
+  @Column({ nullable: true })
   dob!: Date;
 
-  @Column()
+  @Column({ nullable: true })
   phoneNo!: number;
 
-  @Column()
+  @Column({ nullable: true })
   profileImg!: string;
 
-  @Column()
+  @Column({ nullable: true })
   googleId!: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;
+
+  @UpdateDateColumn({ name: 'updated_at', nullable: true })
+  updatedAt!: Date;
 
   @OneToMany(
     () => AccountRecoveryEntity,
