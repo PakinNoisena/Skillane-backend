@@ -65,7 +65,7 @@ export class UserEntity {
 
   @AfterLoad()
   async load() {
-    if (this.identificationNo || this.identificationNo != '') {
+    if (this.identificationNo && this.identificationNo !== '') {
       this.identificationNo = `*********${this.identificationNo?.slice(-4)}`;
     }
   }
