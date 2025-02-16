@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/entities/users.entity';
 import { Repository } from 'typeorm';
-import { UserRegisterDTO } from './users.dto';
+import { UserRegisterDTO, UserUpdaterDTO } from './users.dto';
 import { USER_ERROR } from 'src/config/error.constant';
 
 @Injectable()
@@ -39,5 +39,21 @@ export class UsersService {
     delete userObject.googleId;
 
     return userObject;
+  }
+
+  async updateUserProfile(
+    email: string,
+    body: UserUpdaterDTO,
+  ): Promise<Partial<UserEntity>> {
+    const user = await this.userRepo.findOne({ where: { email } });
+    if (!user) {
+      throw new HttpException(USER_ERROR.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+
+    Object.assign(user, body);
+
+    await this.userRepo.save(user);
+
+    return await this.findUserProfileByEmail(email);
   }
 }

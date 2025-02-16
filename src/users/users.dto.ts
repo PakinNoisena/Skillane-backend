@@ -16,3 +16,17 @@ const userRegisterSchema = z.object({
 });
 
 export class UserRegisterDTO extends createZodDto(userRegisterSchema) {}
+
+const userUpdateSchema = z.object({
+  identificationNo: z.string().length(13).optional(),
+  dob: z.coerce.date().max(new Date()).optional(),
+  phoneNo: z
+    .string()
+    .length(10)
+    .regex(/^\d+$/, { message: 'Invalid format' })
+    .transform((val) => Number(val))
+    .optional(),
+  profileImg: z.string().optional(),
+});
+
+export class UserUpdaterDTO extends createZodDto(userUpdateSchema) {}
