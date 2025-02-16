@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
 import { AppDataSource } from 'src/data-source';
 import { ResponseFormat } from 'src/interceptors/response-format.interceptor';
+import { UploadImageModule } from 'src/upload/upload-image.module';
 import { UsersModule } from 'src/users/users.module';
 
 @Module({
@@ -12,6 +13,7 @@ import { UsersModule } from 'src/users/users.module';
     TypeOrmModule.forRoot(AppDataSource.options),
     UsersModule,
     AuthModule,
+    UploadImageModule,
   ],
   controllers: [],
   providers: [
