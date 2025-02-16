@@ -23,7 +23,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('/profile')
   async getProfile(@Request() req) {
-    console.log('🌟⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️🌟 >>>>>> req', req);
-    return req.user;
+    return await this.userService.findUserProfileByEmail(req.user.email);
   }
 }

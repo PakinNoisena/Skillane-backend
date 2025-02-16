@@ -27,4 +27,17 @@ export class UsersService {
     const userEntity = this.userRepo.create(body);
     await this.userRepo.save(userEntity);
   }
+
+  async findUserProfileByEmail(email: string): Promise<Partial<UserEntity>> {
+    const user = await this.userRepo.findOne({ where: { email } });
+    if (!user) {
+      throw new HttpException(USER_ERROR.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+
+    const userObject = { ...user };
+    delete userObject.password;
+    delete userObject.googleId;
+
+    return userObject;
+  }
 }

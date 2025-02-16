@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
   BeforeUpdate,
   BeforeInsert,
+  AfterLoad,
 } from 'typeorm';
 import { AccountRecoveryEntity } from './account-recovery.entity';
 import * as bcrypt from 'bcryptjs';
@@ -20,7 +21,7 @@ export class UserEntity {
   email!: string;
 
   @Column({ nullable: true })
-  password!: string;
+  password?: string;
 
   @Column({ nullable: true })
   identificationNo!: string;
@@ -35,7 +36,7 @@ export class UserEntity {
   profileImg!: string;
 
   @Column({ nullable: true })
-  googleId!: string;
+  googleId?: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;
@@ -59,6 +60,13 @@ export class UserEntity {
     if (this.password && !this.password.startsWith('$2a$')) {
       const salt = await bcrypt.genSalt(10);
       this.password = await bcrypt.hash(this.password, salt);
+    }
+  }
+
+  @AfterLoad()
+  async load() {
+    if (this.identificationNo || this.identificationNo != '') {
+      this.identificationNo = `*********${this.identificationNo?.slice(-4)}`;
     }
   }
 }
