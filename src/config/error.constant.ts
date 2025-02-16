@@ -12,3 +12,10 @@ export const USER_ERROR = {
     code: '1003',
   },
 };
+
+export const AUTH_ERROR = {
+  RECOVERY_NOT_FOUND: {
+    message: 'Cannot find Recovery account',
+    code: '2001',
+  },
+};

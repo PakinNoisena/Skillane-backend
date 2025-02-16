@@ -10,11 +10,13 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { AccountRecoveryEntity } from 'src/entities/account-recovery.entity';
+import { MailService } from 'src/mail/mail.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UserEntity, AccountRecoveryEntity]),
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -32,6 +34,7 @@ import { GoogleStrategy } from './strategies/google.strategy';
     LocalStrategy,
     JwtStrategy,
     GoogleStrategy,
+    MailService,
   ],
 })
 export class AuthModule {}

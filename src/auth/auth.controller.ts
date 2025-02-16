@@ -16,6 +16,7 @@ import { USER_ERROR } from 'src/config/error.constant';
 import { isEmpty } from 'lodash';
 import { UserValidate } from './interface/user-auth.interface';
 import { GoogleAuthGuard } from 'src/guard/google-auth.guard';
+import { AccRecoveryDTO, ResetPasswordDTO } from './auth.dto';
 
 @Controller('/auth')
 export class AuthController {
@@ -45,5 +46,15 @@ export class AuthController {
     const { accessToken } = await this.authService.googleLogin(req);
 
     return { accessToken };
+  }
+
+  @Post('/recover')
+  async accountRecovery(@Body() body: AccRecoveryDTO) {
+    return this.authService.accountRecovery(body.email);
+  }
+
+  @Post('/reset-password')
+  async resetPassword(@Body() body: ResetPasswordDTO) {
+    return this.authService.resetPassword(body);
   }
 }
