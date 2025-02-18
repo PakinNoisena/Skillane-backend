@@ -38,6 +38,15 @@ export class UserEntity {
   @Column({ nullable: true })
   googleId?: string;
 
+  @Column({ default: false })
+  isFirstEdit!: boolean;
+
+  @Column({ nullable: true })
+  firstName!: string;
+
+  @Column({ nullable: true })
+  lastName!: string;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;
 
