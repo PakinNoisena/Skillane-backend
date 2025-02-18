@@ -25,7 +25,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DATABASE: skillane_nestjs_db
     ports:
-      - '3000:3000'
+      - '8080:8080'
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
