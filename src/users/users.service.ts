@@ -24,7 +24,7 @@ export class UsersService {
         HttpStatus.CONFLICT,
       );
     }
-    const userEntity = this.userRepo.create(body);
+    const userEntity = this.userRepo.create({ ...body, isFirstEdit: false });
     await this.userRepo.save(userEntity);
   }
 
@@ -48,6 +48,10 @@ export class UsersService {
     const user = await this.userRepo.findOne({ where: { email } });
     if (!user) {
       throw new HttpException(USER_ERROR.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+
+    if (!user.isFirstEdit) {
+      Object.assign(body, { isFirstEdit: true });
     }
 
     Object.assign(user, body);
