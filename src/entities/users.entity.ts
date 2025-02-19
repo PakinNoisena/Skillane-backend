@@ -30,7 +30,7 @@ export class UserEntity {
   dob!: Date;
 
   @Column({ nullable: true })
-  phoneNo!: number;
+  phoneNo!: string;
 
   @Column({ nullable: true })
   profileImg!: string;
