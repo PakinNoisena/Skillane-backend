@@ -17,6 +17,7 @@ import { isEmpty } from 'lodash';
 import { UserValidate } from './interface/user-auth.interface';
 import { GoogleAuthGuard } from 'src/guard/google-auth.guard';
 import { AccRecoveryDTO, ResetPasswordDTO } from './auth.dto';
+import { Response } from 'express';
 
 @Controller('/auth')
 export class AuthController {
@@ -35,7 +36,7 @@ export class AuthController {
 
   @Get('google')
   @UseGuards(GoogleAuthGuard)
-  async googleAuth(@Request() req) {}
+  async googleAuth(@Request() req: Request) {}
 
   @Get('google/callback')
   @UseGuards(GoogleAuthGuard)
@@ -44,7 +45,12 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const { accessToken } = await this.authService.googleLogin(req);
-
+    res.cookie('jwt', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
+    res.redirect('http://localhost:3000/');
     return { accessToken };
   }
 
